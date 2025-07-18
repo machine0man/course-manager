@@ -1,0 +1,102 @@
+@model IEnumerable<CourseManager.Models.Course>
+
+@{
+    ViewData["Title"] = "All Courses";
+}
+
+<style>
+    h2 {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .table {
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead {
+        background-color: #4a90e2; 
+        color: #fff;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: #eef3f9;
+    }
+
+    .btn-primary {
+        background-color: #3498db;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .create-btn {
+        display: inline-block;
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Instructor</th>
+            <th>Start Date</th>
+            <th>Room Number</th>
+            <th>No. of Students</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var course in Model)
+    {
+        <tr>
+            <td>@course.Name</td>
+            <td>@course.Instructor</td>
+            <td>@course.StartDate.ToShortDateString()</td>
+            <td>@course.RoomNumber</td>
+            <td>@(course.Students?.Count ?? 0)</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-sm btn-primary">Edit</a>
+                <a asp-controller="Course" asp-action="Manage" asp-route-courseId="@course.Id" class="btn btn-sm btn-secondary">Manage</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<div class="create-btn">
+    <a asp-action="Create" class="btn btn-success">Create New Course</a>
+</div>

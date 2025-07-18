@@ -1,0 +1,96 @@
+@model CourseManager.ViewModels.ConfirmEnrollment
+
+@{
+    ViewData["Title"] = "Confirmation Response";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9fafb;
+        margin: 0;
+        padding: 0;
+    }
+
+    .confirmation-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    p {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    strong {
+        color: #222;
+    }
+
+    .form-check {
+        margin: 12px 0;
+    }
+
+    .form-check-label {
+        font-size: 16px;
+        margin-left: 8px;
+    }
+
+    .btn-submit {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background: #4a90e2;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background: #357abd;
+    }
+</style>
+
+<div class="confirmation-container">
+    <h2>Confirmation Response</h2>
+
+    <p>You have been invited to enroll in the "<strong>@Model.CourseName</strong>" course!</p>
+
+    <p>
+        Hey <strong>@Model.StudentName</strong>, you have been invited to enroll in the
+        "<strong>@Model.CourseName</strong>" in room <strong>@Model.RoomNumber</strong> on
+        <strong>@Model.StartDate.ToShortDateString()</strong> with instructor
+        <strong>@Model.Instructor</strong>. We would be thrilled to have you join us,
+        but we ask you to confirm your enrollment!
+    </p>
+
+    <form asp-action="SubmitResponse" method="post">
+        <input type="hidden" name="StudentId" value="@Model.StudentId" />
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" name="Response" value="Yes" id="yesOption" required />
+            <label class="form-check-label" for="yesOption">Yes</label>
+        </div>
+
+        <div class="form-check">
+            <input type="radio" class="form-check-input" name="Response" value="No" id="noOption" required />
+            <label class="form-check-label" for="noOption">No</label>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit Response</button>
+    </form>
+</div>

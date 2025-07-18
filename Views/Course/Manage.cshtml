@@ -1,0 +1,129 @@
+@model CourseManager.ViewModels.ManageCourse
+
+@{
+    ViewData["Title"] = "Manage Course";
+}
+
+<style>
+    .card-header {
+        background-color: #6c757d;
+        color: #f8f9fa;
+    }
+    .btn-outline-primary, .btn-outline-secondary, .btn-outline-success {
+        border-width: 1.5px;
+    }
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.4em 0.6em;
+    }
+    .table thead {
+        background-color: #495057;
+        color: #f1f1f1;
+    }
+    .table tbody tr:hover {
+        background-color: #e9ecef; 
+    }
+    .container-box {
+        background-color: #f8f9fa; 
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+</style>
+
+<div class="container my-4 container-box">
+    <h2 class="text-secondary mb-4 text-center">Manage Your Course</h2>
+
+    <!-- Navigation -->
+    <nav class="mb-4 d-flex justify-content-center gap-2">
+        <a asp-action="Index" class="btn btn-outline-primary btn-sm">All Courses</a>
+        <a asp-action="Edit" asp-route-id="@Model.Course.Id" class="btn btn-outline-secondary btn-sm">Edit Course</a>
+        <a asp-action="Create" class="btn btn-outline-success btn-sm">Add New Course</a>
+    </nav>
+
+    <!-- Course Summary -->
+    <div class="card mb-4 border-0">
+        <div class="card-header">
+            Course Summary
+        </div>
+        <div class="card-body">
+            <p><strong>@Model.Course.Name</strong> in room <strong>@Model.Course.RoomNumber</strong> 
+               on <strong>@Model.Course.StartDate.ToShortDateString()</strong> 
+               with instructor <strong>@Model.Course.Instructor</strong>.
+            </p>
+            <p>
+                <span class="badge bg-light text-dark border">Invites: @Model.InviteNotSentCount</span>
+                <span class="badge bg-secondary">Sent: @Model.SentCount</span>
+                <span class="badge bg-success text-white">Confirmed: @Model.ConfirmedCount</span>
+                <span class="badge bg-danger">Declined: @Model.DeclinedCount</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Students Table -->
+    <h5 class="mb-3 text-muted">Students</h5>
+    <table class="table table-bordered table-hover table-sm">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+                <td>
+                    @switch (student.Status)
+                    {
+                        case CourseManager.Models.StudentStatus.EnrollmentConfirmed:
+                            <span class="badge bg-success">Confirmed</span>;
+                            break;
+                        case CourseManager.Models.StudentStatus.EnrollmentDeclined:
+                            <span class="badge bg-danger">Declined</span>;
+                            break;
+                        case CourseManager.Models.StudentStatus.ConfirmationMessageSent:
+                            <span class="badge bg-secondary">Sent</span>;
+                            break;
+                        default:
+                            <span class="badge bg-light text-dark border">Not Sent</span>;
+                            break;
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <hr />
+
+    <!-- Add New Student -->
+    <h5 class="text-muted">Add New Student</h5>
+    <form asp-action="AddStudent" method="post" class="mb-4">
+        <input type="hidden" name="CourseId" value="@Model.Course.Id" />
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="Name" class="form-control" placeholder="Student Name" required />
+            </div>
+            <div class="col-md-4">
+                <input type="email" name="Email" class="form-control" placeholder="Student Email" required />
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-success w-100">Add Student</button>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+
+    <!-- Actions -->
+    <h5 class="text-muted">Actions</h5>
+    <form asp-action="SendConfirmations" method="post">
+        <input type="hidden" name="courseId" value="@Model.Course.Id" />
+        <button type="submit" class="btn btn-primary">Send Confirmation Messages</button>
+    </form>
+</div>

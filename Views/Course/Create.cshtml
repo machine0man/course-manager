@@ -1,0 +1,79 @@
+@model CourseManager.Models.Course
+
+@{
+    ViewData["Title"] = "Create Course";
+}
+
+<style>
+    .form-container {
+        background-color: #f8f9fa;
+        padding: 25px;
+        border-radius: 8px;
+        max-width: 600px;
+        margin: 30px auto;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    h2 {
+        color: #495057;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .btn-primary {
+        background-color: #2f942f;
+        border-color: #6c757d;
+    }
+    .btn-primary:hover {
+        background-color: #117525;
+        border-color: #545b62;
+    }
+
+    .btn-secondary {
+        color: #fff;
+        background-color: #adb5bd;
+        border-color: #adb5bd;
+    }
+    .btn-secondary:hover {
+        background-color: #868e96;
+        border-color: #868e96;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Create New Course</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="form-group mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Enter course name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Instructor" class="form-label"></label>
+            <input asp-for="Instructor" class="form-control" placeholder="Enter instructor name" />
+            <span asp-validation-for="Instructor" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="StartDate" class="form-label"></label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="RoomNumber" class="form-label"></label>
+            <input asp-for="RoomNumber" class="form-control" placeholder="Enter room number" />
+            <span asp-validation-for="RoomNumber" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
